@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SD Education | Admin Panel</title>
+<link rel="stylesheet" href="style.css">
+<style>
+    body { font-family: Arial; text-align:center; margin:50px; }
+    input, button { padding:10px; margin:5px; font-size:16px; }
+    table { margin:20px auto; border-collapse: collapse; width:80%; }
+    th, td { border:1px solid #ddd; padding:10px; }
+    th { background:#ff6600; color:white; }
+</style>
+</head>
+<body>
+
+<h2>Admin Login</h2>
+
+<div id="login-div">
+    <input type="password" id="admin-pass" placeholder="Enter Admin Password">
+    <button onclick="checkPassword()">Login</button>
+</div>
+
+<div id="panel-div" style="display:none;">
+    <h2>Registered Students</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>School</th>
+                <th>Grade</th>
+                <th>Course</th>
+                <th>Phone</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody id="student-table">
+            <!-- Data will load here -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+const ADMIN_PASSWORD = "1234"; // Change to your password
+
+function checkPassword() {
+    const pass = document.getElementById("admin-pass").value;
+    if(pass === ADMIN_PASSWORD){
+        document.getElementById("login-div").style.display = "none";
+        document.getElementById("panel-div").style.display = "block";
+        loadStudents();
+    } else {
+        alert("Wrong password!");
+    }
+}
+
+<script>
+function loadStudents(){
+    const students = JSON.parse(localStorage.getItem("studentsData") || "[]");
+    const tbody = document.getElementById("student-table").querySelector("tbody");
+    tbody.innerHTML = "";
+
+    students.forEach(s => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${s.name}</td>
+            <td>${s.school}</td>
+            <td>${s.grade}</td>
+            <td>${s.course}</td>
+            <td>${s.phone}</td>
+            <td>${s.date}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// Page load එකේ call කරන්න
+window.onload = loadStudents;
+</script>
+
+</body>
+</html>
